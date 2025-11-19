@@ -2,13 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+
 
 @layer base {
   :root {
-    /* Luxurious Rose Gold Design System */
+
     --background: 340 40% 98%;
     --foreground: 340 20% 15%;
 
@@ -18,18 +16,18 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 340 20% 15%;
 
-    /* Elegant rose gold primary */
+
     --primary: 340 70% 65%;
     --primary-foreground: 0 0% 100%;
 
-    /* Soft pearl secondary */
+
     --secondary: 30 35% 92%;
     --secondary-foreground: 340 20% 25%;
 
     --muted: 340 15% 94%;
     --muted-foreground: 340 10% 50%;
 
-    /* Warm champagne accent */
+
     --accent: 40 55% 75%;
     --accent-foreground: 340 20% 20%;
 
@@ -40,10 +38,10 @@ All colors MUST be HSL.
     --input: 340 15% 90%;
     --ring: 340 70% 65%;
 
-    /* Elegant curves */
+
     --radius: 16px;
 
-    /* Luxurious design tokens */
+
     --rose-gold: 340 70% 65%;
     --rose-gold-light: 340 60% 75%;
     --rose-gold-dark: 340 80% 55%;
@@ -52,20 +50,20 @@ All colors MUST be HSL.
     --marble: 340 15% 97%;
     --charcoal: 340 25% 20%;
     
-    /* Sophisticated gradients */
+
     --gradient-hero: linear-gradient(135deg, hsl(340 60% 96%) 0%, hsl(340 50% 92%) 30%, hsl(340 70% 85%) 60%, hsl(340 70% 65%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(340 30% 97%) 50%, hsl(30 35% 95%) 100%);
     --gradient-accent: linear-gradient(120deg, hsl(340 70% 75%) 0%, hsl(340 70% 65%) 50%, hsl(340 80% 60%) 100%);
     --gradient-marble: linear-gradient(160deg, hsl(340 50% 98%) 0%, hsl(30 40% 96%) 25%, hsl(40 50% 94%) 50%, hsl(340 40% 95%) 75%, hsl(340 50% 97%) 100%);
     --gradient-shimmer: linear-gradient(90deg, transparent 0%, hsl(340 70% 85% / 0.2) 50%, transparent 100%);
     
-    /* Luxury shadows */
+
     --shadow-soft: 0 4px 24px hsl(340 70% 65% / 0.08);
     --shadow-elegant: 0 12px 40px hsl(340 70% 65% / 0.2);
     --shadow-glow: 0 0 60px hsl(340 70% 75% / 0.35);
     --shadow-intense: 0 20px 60px hsl(340 70% 65% / 0.25);
 
-    /* Smooth animations */
+
     --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-spring: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);

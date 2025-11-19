@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
+✨ Lash Designer - Sistema de Gerenciamento e Portfólio
+Este projeto é uma aplicação web completa, desenvolvida para gerenciar e apresentar os serviços de uma Lash Designer (e possivelmente outras profissionais de beleza), focando na exibição de portfólio, agendamento de serviços (booking), e informações de contato. A estrutura é dividida em frontend e backend para uma arquitetura escalável (Full-Stack).
 
-## Project info
+🚀 Tecnologias Utilizadas
+A análise da estrutura de arquivos sugere o uso das seguintes tecnologias:
 
-**URL**: https://lovable.dev/projects/b791a967-882b-4891-bcf4-5411d415cfcb
+Frontend (Client-Side)
+Framework: React 
 
-## How can I edit this code?
+Build Tool: Vite 
 
-There are several ways of editing your application.
+Linguagem: TypeScript 
 
-**Use Lovable**
+Estilização & Componentes: Tailwind CSS  e Shadcn UI 
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b791a967-882b-4891-bcf4-5411d415cfcb) and start prompting.
+Estrutura: Componentes modulares 
 
-Changes made via Lovable will be committed automatically to this repo.
+Backend (Server-Side)
+Ambiente/Runtime: Node.js 
 
-**Use your preferred IDE**
+Linguagem: TypeScript 
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Servidor: Express.js ou similar 
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
+Package Manager: Bun / npm/Yarn 
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+📂 Estrutura do Projeto
+O projeto é dividido em três diretórios principais:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+server/: Contém o código do backend/API. Responsável pela lógica de negócios, gerenciamento de dados (agendamentos, autenticação, etc.), e integração com serviços externos (como o Firebase).
 
-# Step 3: Install the necessary dependencies.
-npm i
+Arquivo chave: server/server.ts (ponto de entrada do servidor).
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+src/: Contém todo o código-fonte do frontend (interface do usuário).
 
-**Edit a file directly in GitHub**
+src/components/: Componentes reutilizáveis (Hero, Services, Contact, etc.).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+src/components/ui/: Componentes base do Shadcn UI/Radix-UI.
 
-**Use GitHub Codespaces**
+src/assets/: Imagens e mídias estáticas (incluindo o portfólio).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+src/pages/: Páginas principais da aplicação (Index.tsx, NotFound.tsx).
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/b791a967-882b-4891-bcf4-5411d415cfcb) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+public/: Arquivos estáticos que são copiados diretamente para a raiz do build do frontend (favicon, robots.txt, etc.).

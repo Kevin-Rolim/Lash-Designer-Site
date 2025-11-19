@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configuração de CORS para permitir requisições do frontend
+
 app.use(
   cors({
     origin:
@@ -24,7 +24,6 @@ app.use(
 
 app.use(express.json());
 
-// --- Configuração do Google Calendar (Autenticação via Conta de Serviço) ---
 const auth = new JWT({
   keyFile: process.env.GOOGLE_SERVICE_ACCOUNT_KEY,
   scopes: [
@@ -38,17 +37,17 @@ const calendar = google.calendar({
   auth: auth,
 });
 
-// --- LISTA DE SERVIÇOS ATUALIZADA ---
+
 const SERVICES: Record<
   string,
   { name: string; duration: number; price: number }
 > = {
-  // ATUALIZADOS
-  "volume-brasileiro": { name: "Volume Brasileiro", duration: 90, price: 130 }, // 1h30
-  "volume-5d": { name: "Volume 5D", duration: 90, price: 150 }, // 1h30
-  "mega-volume": { name: "Mega Volume", duration: 120, price: 180 }, // 2h
 
-  // NÃO ALTERADOS
+  "volume-brasileiro": { name: "Volume Brasileiro", duration: 90, price: 130 },
+  "volume-5d": { name: "Volume 5D", duration: 90, price: 150 }, 
+  "mega-volume": { name: "Mega Volume", duration: 120, price: 180 },
+
+
   "designer-simples": {
     name: "Designer de Sobrancelha Simples",
     duration: 30,
@@ -65,7 +64,6 @@ const SERVICES: Record<
     price: 100,
   },
 
-  // NOVOS
   "manutencao-vb-5d": {
     name: "Manutenção (Vol. Brasileiro/5D)",
     duration: 60, // 1h
@@ -82,53 +80,41 @@ const SERVICES: Record<
     price: 30,
   },
 };
-// --- FIM DA ATUALIZAÇÃO ---
 
-// Horários de funcionamento
 const BUSINESS_HOURS = {
   weekdays: { start: 9, end: 18.5 }, // 9h às 18:30
   saturday: { start: 8, end: 14 },
   sunday: null, // Fechado
 };
 
-/**
- * Verifica se um horário está disponível (LÓGICA DE COLISÃO CORRIGIDA)
- * Compara um [slotStart, slotEnd] com uma lista de [busyStart, busyEnd]
- */
+
 function isTimeSlotAvailable(
   slotStart: Date,
   duration: number,
-  busyBlocks: any[], // Lista de blocos ocupados da API free/busy
-  businessHours: { start: number; end: number } | null // (Não usado para 'end')
+  busyBlocks: any[],
+  businessHours: { start: number; end: number } | null
 ): boolean {
   if (!businessHours) return false;
 
   const slotStartMs = slotStart.getTime();
   const slotEndMs = slotStartMs + duration * 60000;
 
-  // 2. Verifica conflitos com blocos ocupados (LÓGICA CORRIGIDA)
   for (const block of busyBlocks) {
     const busyStartMs = new Date(block.start).getTime();
     const busyEndMs = new Date(block.end).getTime();
 
-    // Lógica de colisão mais simples:
-    // Colide se NÃO for totalmente antes OU totalmente depois.
     const isTotallyBefore = slotEndMs <= busyStartMs;
     const isTotallyAfter = slotStartMs >= busyEndMs;
 
-    // Se NÃO estiver totalmente antes E NÃO estiver totalmente depois, há colisão.
     if (!(isTotallyBefore || isTotallyAfter)) {
-      return false; // Colisão detectada!
+      return false; 
     }
   }
 
-  return true; // Sem colisões
+  return true;
 }
 
-/**
- * GET /api/available-slots
- * Retorna horários disponíveis para agendamento (Versão Corrigida)
- */
+
 app.get("/api/available-slots", async (req, res) => {
   try {
     const { serviceId, date } = req.query;
@@ -144,12 +130,11 @@ app.get("/api/available-slots", async (req, res) => {
       return res.status(400).json({ error: "Serviço inválido" });
     }
 
-    // --- CORREÇÃO DE FUSO HORÁRIO ---
     const selectedDateStr = date as string;
     const startOfDay = new Date(selectedDateStr + "T00:00:00-03:00");
     const endOfDay = new Date(selectedDateStr + "T23:59:59-03:00");
 
-    // --- CORREÇÃO DE LÓGICA (freebusy.query) ---
+
     const freeBusyResponse = await calendar.freebusy.query({
       requestBody: {
         timeMin: startOfDay.toISOString(),
@@ -163,7 +148,7 @@ app.get("/api/available-slots", async (req, res) => {
     const busyBlocks =
       freeBusyResponse.data.calendars?.[calendarId]?.busy || [];
 
-    // [DEBUG] Log de debug (agora no lugar certo)
+
     console.log(
       `[DEBUG] Blocos ocupados para ${selectedDateStr}:`,
       JSON.stringify(busyBlocks)
@@ -195,12 +180,8 @@ app.get("/api/available-slots", async (req, res) => {
         const slotTimeStr = `${selectedDateStr}T${hourStr}:${minuteStr}:00-03:00`;
         const slotTime = new Date(slotTimeStr);
 
-        // --- FILTRO DE HORÁRIOS PASSADOS (REATIVADO) ---
-
-        // --- FILTRO DE HORÁRIOS PASSADOS (REATIVADO) ---
         const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
         if (slotTime < oneHourFromNow) continue;
-        // --- FIM DO FILTRO ---
 
         if (
           isTimeSlotAvailable(
@@ -229,16 +210,11 @@ app.get("/api/available-slots", async (req, res) => {
   }
 });
 
-/**
- * POST /api/create-booking
- * Cria um novo agendamento no Google Calendar
- */
 app.post("/api/create-booking", async (req, res) => {
   try {
     const { serviceId, dateTime, customerName, customerPhone, recaptchaToken } =
       req.body;
 
-    // Validações...
     if (
       !serviceId ||
       !dateTime ||
@@ -290,11 +266,10 @@ app.post("/api/create-booking", async (req, res) => {
       return res.status(400).json({ error: "Serviço inválido" });
     } 
 
-    // Correção de Fuso Horário
     const startTime = new Date(dateTime + ":00-03:00"); 
     const endTime = new Date(startTime.getTime() + service.duration * 60000);
 
-    // Cria evento no Google Calendar
+
     const event = {
       summary: `${service.name} - ${customerName}`,
       description: `Cliente: ${customerName}\nTelefone: ${customerPhone}\nServiço: ${service.name}\nValor: R$ ${service.price},00`,
@@ -332,10 +307,7 @@ app.post("/api/create-booking", async (req, res) => {
   }
 });
 
-/**
- * GET /api/google-reviews
- * Busca avaliações do Google Places
- */
+
 app.get("/api/google-reviews", async (req, res) => {
   try {
     const response = await axios.get(
@@ -368,9 +340,6 @@ app.get("/api/google-reviews", async (req, res) => {
   }
 });
 
-/**
- * Health check endpoint
- */
 app.get("/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
